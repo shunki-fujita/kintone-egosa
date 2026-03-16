@@ -1,0 +1,98 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 340px;
+  font-family: "Segoe UI", "Meiryo", sans-serif;
+  font-size: 13px;
+  color: #333;
+  padding: 12px;
+}
+
+h1 {
+  font-size: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #3498db;
+}
+
+section { margin-bottom: 10px; }
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+label small { font-weight: normal; color: #888; }
+
+.hint { font-size: 11px; color: #999; margin-top: 2px; }
+
+input[type="text"], textarea, select {
+  width: 100%;
+  padding: 5px 7px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+}
+textarea { resize: vertical; }
+
+.domain-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.domain-row input { flex: 1; }
+.domain-row span { white-space: nowrap; color: #666; font-size: 12px; }
+
+.group-types {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 8px;
+}
+
+.cb {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.auto-schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.auto-schedule-row input[type="time"] { width: auto; }
+.auto-schedule-row span { white-space: nowrap; color: #666; font-size: 12px; }
+
+.actions { display: flex; gap: 8px; margin-top: 12px; }
+
+button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-primary { flex: 1; background: #3498db; color: #fff; }
+.btn-primary:hover { background: #2980b9; }
+.btn-danger { background: #e74c3c; color: #fff; }
+.btn-danger:hover { background: #c0392b; }
+
+.status {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+}
+.status .on { color: #27ae60; font-weight: bold; }
+.status .off { color: #999; }
+.status .err { color: #e74c3c; }
+
+.message {
+  font-size: 12px;
+  padding: 2px 0;
+  color: #27ae60;
+  min-height: 18px;
+}
+.message.error { color: #e74c3c; }

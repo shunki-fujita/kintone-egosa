@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h1>kintone エゴサ</h1>
+
+  <section>
+    <label>サブドメイン</label>
+    <div class="domain-row">
+      <input type="text" id="subdomain" placeholder="example">
+      <span>.cybozu.com</span>
+    </div>
+    <p class="hint">ブラウザで kintone にログイン済みであること</p>
+  </section>
+
+  <section>
+    <label>キーワード <small>(1行に1つ)</small></label>
+    <textarea id="keywords" rows="3" placeholder="検索ワード1&#10;検索ワード2"></textarea>
+  </section>
+
+  <section>
+    <label>検索対象</label>
+    <div class="group-types">
+      <label class="cb"><input type="checkbox" value="RECORD" checked> レコード</label>
+      <label class="cb"><input type="checkbox" value="RECORD_COMMENT" checked> コメント</label>
+      <label class="cb"><input type="checkbox" value="SPACE" checked> スペース</label>
+      <label class="cb"><input type="checkbox" value="PEOPLE" checked> ピープル</label>
+      <label class="cb"><input type="checkbox" value="MESSAGE" checked> メッセージ</label>
+      <label class="cb"><input type="checkbox" value="FILE"> ファイル</label>
+    </div>
+  </section>
+
+  <section>
+    <label>検索間隔</label>
+    <select id="interval">
+      <option value="1">1分</option>
+      <option value="3">3分</option>
+      <option value="5" selected>5分</option>
+      <option value="10">10分</option>
+      <option value="30">30分</option>
+    </select>
+  </section>
+
+  <section>
+    <label>自動開始</label>
+    <div class="auto-schedule-row">
+      <input type="checkbox" id="autoStartEnabled" checked>
+      <input type="time" id="autoStartTime" value="10:00">
+      <span>に自動開始</span>
+    </div>
+  </section>
+
+  <section>
+    <label>自動停止</label>
+    <div class="auto-schedule-row">
+      <input type="checkbox" id="autoStopEnabled" checked>
+      <input type="time" id="autoStopTime" value="19:00">
+      <span>に自動停止</span>
+    </div>
+  </section>
+
+  <section class="actions">
+    <button id="save" class="btn-primary">保存して開始</button>
+    <button id="stop" class="btn-danger">停止</button>
+  </section>
+
+  <section id="status" class="status"></section>
+  <div id="message" class="message"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

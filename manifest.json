@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "kintone エゴサ",
+  "version": "1.0.0",
+  "description": "kintoneをキーワードで定期検索し、新規ヒット時にデスクトップ通知",
+  "permissions": [
+    "alarms",
+    "notifications",
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.cybozu.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "kintone エゴサ",
+    "default_icon": { "128": "icon.png" }
+  },
+  "icons": { "128": "icon.png" }
+}
