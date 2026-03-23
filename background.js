@@ -133,8 +133,6 @@ function formatDoc(subdomain, doc) {
   let snippet = '';
   if (doc.highlight) {
     snippet = doc.highlight
-      .replace(/<strong>/g, '【')
-      .replace(/<\/strong>/g, '】')
       .replace(/<[^>]*>/g, '')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
