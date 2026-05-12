@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "kintone エゴサ",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "kintoneをキーワードで定期検索し、新規ヒット時にデスクトップ通知",
   "permissions": [
     "alarms",
