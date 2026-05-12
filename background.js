@@ -226,12 +226,25 @@ async function runSearch() {
       seenArr = seenArr.slice(-MAX_SEEN);
     }
 
+    // --- muteLocations フィルタ ---
+    const muteLines = parseKeywords(config.muteLocations)
+      .filter((m) => m.length >= 2)
+      .map((m) => m.toLowerCase());
+
+    const filteredHits = muteLines.length
+      ? newHits.filter((hit) => {
+          const loc = (hit.location || '').toLowerCase();
+          return !muteLines.some((m) => loc.includes(m));
+        })
+      : newHits;
+
     await chrome.storage.local.set({
       seenIds: seenArr,
       initialized: true,
       storageVersion: STORAGE_VERSION,
       lastSearchTime: Date.now(),
       lastHitCount: newHits.length,
+      lastNotifiedCount: filteredHits.length,
       lastError: lastKeywordError || null,
     });
 
@@ -239,7 +252,7 @@ async function runSearch() {
     const notifUrls =
       (await chrome.storage.local.get('notifUrls')).notifUrls || {};
 
-    for (const hit of newHits.slice(0, 5)) {
+    for (const hit of filteredHits.slice(0, 5)) {
       const nid = `egosa_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
       notifUrls[nid] = hit.url;
 
@@ -261,7 +274,7 @@ async function runSearch() {
       });
     }
 
-    if (newHits.length > 5) {
+    if (filteredHits.length > 5) {
       const nid = `egosa_overflow_${Date.now()}`;
       const kw = encodeURIComponent(keywords[0]);
       notifUrls[nid] = `https://${config.subdomain}.cybozu.com/k/search?keyword=${kw}`;
@@ -269,7 +282,7 @@ async function runSearch() {
         type: 'basic',
         iconUrl: chrome.runtime.getURL('icon.png'),
         title: `kintone エゴサ`,
-        message: `他 ${newHits.length - 5} 件の新規ヒット`,
+        message: `他 ${filteredHits.length - 5} 件の新規ヒット`,
       });
     }
 

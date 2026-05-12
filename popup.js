@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     'monitoring',
     'lastSearchTime',
     'lastHitCount',
+    'lastNotifiedCount',
     'lastError',
   ]);
 
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const c = store.config || {};
   $('subdomain').value = c.subdomain || '';
   $('keywords').value = c.keywords || '';
+  $('muteLocations').value = c.muteLocations || '';
   $('interval').value = c.interval || 5;
   // Default: auto-start enabled at 10:00
   $('autoStartEnabled').checked = c.autoStartTime !== undefined ? c.autoStartTime !== null : true;
@@ -95,6 +97,7 @@ function getConfig() {
   return {
     subdomain: $('subdomain').value.trim(),
     keywords: $('keywords').value,
+    muteLocations: $('muteLocations').value,
     interval: Number($('interval').value),
     groupTypes,
     autoStartTime: $('autoStartEnabled').checked ? $('autoStartTime').value : null,
@@ -125,7 +128,9 @@ function updateStatus(store) {
     html += ` | ${store.config.autoStopTime}停止`;
   }
   if (store.lastHitCount != null) {
+    const muted = store.lastHitCount - (store.lastNotifiedCount ?? store.lastHitCount);
     html += ` | 前回 ${store.lastHitCount} 件`;
+    if (muted > 0) html += ` (${muted} 件ミュート)`;
   }
   if (err) {
     html += `<br><span class="err">${escapeHtml(err)}</span>`;
