@@ -8,7 +8,7 @@ kintone の全文検索を定期実行し、新規ヒット時にデスクトッ
 | 項目 | 内容 |
 |---|---|
 | 名称 | kintone エゴサ |
-| バージョン | 1.1.0 |
+| バージョン | 1.2.0 |
 | 種別 | Chrome 拡張機能 (Manifest V3) |
 | 目的 | kintone 上の投稿をキーワードで定期的に検索し、前回検索時になかった新規コンテンツをデスクトップ通知で知らせる |
 
@@ -70,22 +70,30 @@ kintone-egosa/
 | メッセージ | `MESSAGE` | |
 | ファイル | `FILE` | |
 
-### 5.4 検索間隔
+### 5.4 除外キーワード (本文)
+
+- スニペット (本文) に指定した文字列が含まれる検索結果を通知から除外する
+- 1行に1つずつ入力
+- 2文字以上の文字列のみ有効
+- 大文字小文字を区別しない
+- 例: `https://redash` を設定すると、スニペットにその文字列を含む結果が除外される
+
+### 5.5 検索間隔
 
 1分 / 3分 / **5分(デフォルト)** / 10分 / 30分 から選択
 
-### 5.5 自動停止
+### 5.6 自動停止
 
 - チェックボックス + time 入力で有効/無効と時刻を設定
 - デフォルト: **有効、19:00**
 - アラーム発火時に現在時刻が設定時刻以降であれば監視を自動停止する
 
-### 5.6 操作ボタン
+### 5.7 操作ボタン
 
 - **「保存して開始」** — 設定を保存し、定期検索を開始
 - **「停止」** — 定期検索を停止
 
-### 5.7 ステータス表示
+### 5.8 ステータス表示
 
 - 監視中 / 停止中
 - 最終検索時刻
@@ -199,14 +207,18 @@ API レスポンスの `doc.type` を設定の groupTypes にマッピング:
 | `config.subdomain` | `string` | サブドメイン |
 | `config.keywords` | `string` | キーワード (改行区切り) |
 | `config.interval` | `number` | 検索間隔 (分) |
+| `config.muteLocations` | `string` | ミュートする場所名 (改行区切り) |
+| `config.excludeWords` | `string` | 除外キーワード (改行区切り) |
 | `config.groupTypes` | `string[]` | 検索対象の種別 |
+| `config.autoStartTime` | `string?` | 自動開始時刻 (`"HH:MM"`, `null`=無効) |
 | `config.autoStopTime` | `string?` | 自動停止時刻 (`"HH:MM"`, `null`=無効) |
 | `monitoring` | `boolean` | 監視中かどうか |
 | `seenIds` | `string[]` | 既読の doc.id 一覧 (最大10,000) |
 | `initialized` | `boolean` | 初回スキャン完了フラグ |
 | `storageVersion` | `number` | ストレージ形式のバージョン (現在: 2) |
 | `lastSearchTime` | `number` | 最終検索時刻 (Unix ms) |
-| `lastHitCount` | `number` | 前回の新規ヒット件数 |
+| `lastHitCount` | `number` | 前回の新規ヒット件数 (フィルタ前) |
+| `lastNotifiedCount` | `number` | 前回の通知件数 (フィルタ後) |
 | `lastError` | `string?` | 直近のエラーメッセージ (正常時は `null`) |
 | `notifUrls` | `Object` | 通知ID → URL のマッピング (最大100件) |
 

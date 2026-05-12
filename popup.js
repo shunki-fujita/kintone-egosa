@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   $('subdomain').value = c.subdomain || '';
   $('keywords').value = c.keywords || '';
   $('muteLocations').value = c.muteLocations || '';
+  $('excludeWords').value = c.excludeWords || '';
   $('interval').value = c.interval || 5;
   // Default: auto-start enabled at 10:00
   $('autoStartEnabled').checked = c.autoStartTime !== undefined ? c.autoStartTime !== null : true;
@@ -98,6 +99,7 @@ function getConfig() {
     subdomain: $('subdomain').value.trim(),
     keywords: $('keywords').value,
     muteLocations: $('muteLocations').value,
+    excludeWords: $('excludeWords').value,
     interval: Number($('interval').value),
     groupTypes,
     autoStartTime: $('autoStartEnabled').checked ? $('autoStartTime').value : null,
