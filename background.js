@@ -238,13 +238,25 @@ async function runSearch() {
         })
       : newHits;
 
+    // --- excludeWords フィルタ ---
+    const excludeWords = parseKeywords(config.excludeWords)
+      .filter((w) => w.length >= 2)
+      .map((w) => w.toLowerCase());
+
+    const finalHits = excludeWords.length
+      ? filteredHits.filter((hit) => {
+          const snippet = (hit.snippet || '').toLowerCase();
+          return !excludeWords.some((w) => snippet.includes(w));
+        })
+      : filteredHits;
+
     await chrome.storage.local.set({
       seenIds: seenArr,
       initialized: true,
       storageVersion: STORAGE_VERSION,
       lastSearchTime: Date.now(),
       lastHitCount: newHits.length,
-      lastNotifiedCount: filteredHits.length,
+      lastNotifiedCount: finalHits.length,
       lastError: lastKeywordError || null,
     });
 
@@ -252,7 +264,7 @@ async function runSearch() {
     const notifUrls =
       (await chrome.storage.local.get('notifUrls')).notifUrls || {};
 
-    for (const hit of filteredHits.slice(0, 5)) {
+    for (const hit of finalHits.slice(0, 5)) {
       const nid = `egosa_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
       notifUrls[nid] = hit.url;
 
@@ -274,7 +286,7 @@ async function runSearch() {
       });
     }
 
-    if (filteredHits.length > 5) {
+    if (finalHits.length > 5) {
       const nid = `egosa_overflow_${Date.now()}`;
       const kw = encodeURIComponent(keywords[0]);
       notifUrls[nid] = `https://${config.subdomain}.cybozu.com/k/search?keyword=${kw}`;
@@ -282,7 +294,7 @@ async function runSearch() {
         type: 'basic',
         iconUrl: chrome.runtime.getURL('icon.png'),
         title: `kintone エゴサ`,
-        message: `他 ${filteredHits.length - 5} 件の新規ヒット`,
+        message: `他 ${finalHits.length - 5} 件の新規ヒット`,
       });
     }
 
